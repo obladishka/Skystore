@@ -11,6 +11,13 @@ class Category(models.Model):
         verbose_name="описание", help_text="Добавьте описание категории", null=True, blank=True
     )
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "категория"
+        verbose_name_plural = "категории"
+
 
 class Product(models.Model):
     """Таблица товаров."""
@@ -38,3 +45,10 @@ class Product(models.Model):
     )
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name}, категория: {self.category}"
+
+    class Meta:
+        verbose_name = "продукт"
+        verbose_name_plural = "продукты"
