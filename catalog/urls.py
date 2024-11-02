@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 
 from catalog.apps import CatalogConfig
@@ -10,3 +12,6 @@ urlpatterns = [
     path("home/", home, name="home2"),
     path("contacts/", contacts, name="contacts"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
