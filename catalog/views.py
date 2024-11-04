@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from catalog.models import Product
+from catalog.models import Contacts, Product
 
 
 def home(request):
@@ -24,4 +24,6 @@ def contacts(request):
 
         context = {"name": name}
         return render(request, "catalog/message.html", context)
-    return render(request, "catalog/contacts.html")
+
+    context = {"contacts": Contacts.objects.all()}
+    return render(request, "catalog/contacts.html", context)
