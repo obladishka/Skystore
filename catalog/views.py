@@ -1,9 +1,18 @@
 from django.shortcuts import render
 
+from catalog.models import Product
+
 
 def home(request):
     """Функция для отображения домашней страницы."""
-    return render(request, "catalog/home.html")
+    products = Product.objects.order_by("-created_at")[:5]
+
+    for product in products:
+        print(product)
+
+    context = {"products": products}
+
+    return render(request, "catalog/home.html", context)
 
 
 def contacts(request):
