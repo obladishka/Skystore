@@ -1,0 +1,54 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Удобный сервис рассылок",
+        "description": "- Неограниченная лицензия\n- Поддержка\n- Установка на сервер\n- Получение обновлений",
+        "image": "",
+        "category": 1,
+        "price": "140.00",
+        "created_at": "2024-11-02",
+        "updated_at": "2024-11-02"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Mail Bot",
+        "description": "Позволяет читать электронные письма и отвечать на них не заходя в приложение или на сайт",
+        "image": "",
+        "category": 2,
+        "price": "200.00",
+        "created_at": "2024-11-02",
+        "updated_at": "2024-11-02"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "name": "StickerBot",
+        "description": "Преобразует сообщения пользователей в стикеры",
+        "image": "",
+        "category": 2,
+        "price": "50.00",
+        "created_at": "2024-11-02",
+        "updated_at": "2024-11-02"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "SkySender",
+        "description": null,
+        "image": "",
+        "category": 1,
+        "price": "300.00",
+        "created_at": "2024-11-02",
+        "updated_at": "2024-11-02"
+    }
+}
+]
