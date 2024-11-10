@@ -23,12 +23,14 @@
 </div>
 
 <div class="container">
-    <div class="row text-center">
-        <div class="hstack gap-3">
-            {% for product in products %}
-                <div class="card mb-4 box-shadow col-3" style="width: 13rem; height: 20rem;">
-                    <div class="card-header" style="height: 4rem;">
-                        <h5 class="my-0 font-weight-normal">{{ product.name }}</h5>
+    <div class="row row-cols-1 row-cols-md-4 g-4 text-center">
+        {% for product in products %}
+            <div class="col">
+                <div class="card mb-4 box-shadow" style="height: 20rem;">
+                    <div class="card-header text-center" style="height: 4rem;">
+                        <div class="row align-items-center py-0 my-0" style="height: 100%;">
+                            <h5 class="fw-medium lh-1 my-0 py-0">{{ product.name }}</h5>
+                        </div>
                     </div>
                     <div class="card-body" style="height: 12rem;">
                         <h2 class="card-title pricing-card-title">$ {{ product.price }}</h2>
@@ -38,8 +40,8 @@
                         <button type="button" class="btn btn-lg btn-block mb-4 btn-outline-primary position-sticky bottom-0">Купить</button>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
