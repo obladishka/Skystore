@@ -5,14 +5,21 @@ from catalog.models import Contacts, Product
 
 def home(request):
     """Функция для отображения домашней страницы."""
-    products = Product.objects.order_by("-created_at")[:5]
+    products = Product.objects.order_by("-created_at")
 
-    for product in products:
+    for product in products[:5]:
         print(product)
 
     context = {"products": products}
 
     return render(request, "catalog/home.html", context)
+
+
+def product_detail(request, id):
+    """Функция для отображения страницы конкретного товара."""
+    product = Product.objects.get(id=id)
+    context = {"product": product}
+    return render(request, "catalog/product_detail.html", context)
 
 
 def contacts(request):
