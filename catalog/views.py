@@ -3,14 +3,20 @@ from django.shortcuts import render
 from catalog.models import Contacts, Product
 
 
-def home(request):
+def home(request, page=0):
     """Функция для отображения домашней страницы."""
     products = Product.objects.order_by("-created_at")
 
     for product in products[:5]:
         print(product)
 
-    context = {"products": products}
+    context = {
+        "products": products[
+            page if page == 0 else page + 2 : page + 3 if page + 3 <= len(products) else len(products)
+        ],
+        "last_product": list(products)[-1],
+        "range": range(len(products) // 3 + 1),
+    }
 
     return render(request, "catalog/home.html", context)
 
