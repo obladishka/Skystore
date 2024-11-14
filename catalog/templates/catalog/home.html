@@ -9,27 +9,28 @@
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
     {% for product in products %}
-        <div class="col">
-            <div class="card mb-4 box-shadow mx-5" style="height: 20rem;">
-                <div class="card-header text-center" style="height: 4rem;">
-                    <div class="row align-items-center py-0 my-0" style="height: 100%;">
-                        <h5 class="fw-medium lh-1 my-0 py-0">{{ product.name }}</h5>
+        {% if product %}
+            <div class="col">
+                <div class="card mb-4 box-shadow mx-5" style="height: 20rem;">
+                    <div class="card-header text-center" style="height: 4rem;">
+                        <div class="row align-items-center py-0 my-0" style="height: 100%;">
+                            <h5 class="fw-medium lh-1 my-0 py-0">{{ product.name }}</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="height: 12rem;">
+                        <h2 class="card-title pricing-card-title">$ {{ product.price }}</h2>
+                        <p class="fs-6 fw-light">{{ product.description|truncatechars:100 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0" style="height: 4rem;">
+                        <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-lg btn-block mb-4 btn-outline-primary position-sticky bottom-0">Подробнее</a>
                     </div>
                 </div>
-                <div class="card-body" style="height: 12rem;">
-                    <h2 class="card-title pricing-card-title">$ {{ product.price }}</h2>
-                    <p class="fs-6 fw-light">{{ product.description|truncatechars:100 }}</p>
-                </div>
-                <div class="card-footer bg-transparent border-top-0" style="height: 4rem;">
-                    <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-lg btn-block mb-4 btn-outline-primary position-sticky bottom-0">Подробнее</a>
-                </div>
             </div>
-        </div>
-        {% if product.id == last_product.id %}
+        {% else  %}
             <div class="card bg-secondary-subtle mb-4 box-shadow mx-5" style="height: 20rem; width: 17rem">
                 <div class="card-body text-center" style="height: 20rem">
                     <div class="d-flex justify-content-center align-items-center" style="height: 100%">
-                        <a href="{% url 'catalog:home' %}" class="btn btn-lg btn-block fw-bold btn-secondary rounded-circle">+</a>
+                        <a href="{% url 'catalog:add_product' %}" class="btn btn-lg btn-block fw-bold btn-secondary rounded-circle">+</a>
                     </div>
                 </div>
             </div>
