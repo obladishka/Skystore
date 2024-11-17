@@ -1,64 +1,58 @@
 from django.shortcuts import render
+from django.views.generic import CreateView, DetailView, ListView
 
-from catalog.models import Category, Contacts, Product
-
-
-def home(request, page=0):
-    """Функция для отображения домашней страницы."""
-    products = Product.objects.all().order_by("-created_at")
-
-    for product in products[:5]:
-        print(product)
-
-    products_list = list(products)
-    products_list.append(None)
-
-    context = {
-        "products": products_list[page * 3 : (page + 1) * 3],
-        "range": range((len(products)) // 3 + 3 % 2),
-    }
-
-    return render(request, "catalog/home.html", context)
+from catalog.forms import ProductCreateForm
+from catalog.models import Contacts, Product
 
 
-def product_detail(request, id):
-    """Функция для отображения страницы конкретного товара."""
-    product = Product.objects.get(id=id)
-    context = {"product": product}
-    return render(request, "catalog/product_detail.html", context)
+class ProductListView(ListView):
+    """Класс для отображения домашней страницы."""
+
+    model = Product
+    template_name = "catalog/product_list.html"
+    paginate_by = 3
+    context_object_name = "products"
+    ordering = "-created_at"
+
+    def get_queryset(self):
+        """Метод для изменения полученных данных."""
+        queryset = list(super().get_queryset())
+        queryset.append(None)
+        return queryset
 
 
-def contacts(request):
-    """Функция для отображения страницы контактов и обработки POST-запросов."""
-    if request.method == "POST":
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
+class ProductDetailView(DetailView):
+    """Класс для отображения страницы конкретного товара."""
 
+    model = Product
+
+
+class ContactsListViewWithPost(ListView):
+    """Класс для отображения страницы контактов и обработки POST-запросов."""
+
+    model = Contacts
+    template_name = "catalog/contacts.html"
+    context_object_name = "contacts"
+
+    def post(self, request, *args, **kwargs):
+        """Метод для обработки POST-запросов."""
+        name = self.request.POST.get("name")
         context = {"h1": f"{name}, спасибо за Ваше сообщение!", "h3": "Мы обязательно свяжемся с Вами."}
         return render(request, "catalog/message.html", context)
 
-    context = {"contacts": Contacts.objects.all()}
-    return render(request, "catalog/contacts.html", context)
 
+class ProductCreateView(CreateView):
+    """Класс для добавления товаров."""
 
-def add_product(request):
-    """Функция для добавления товаров."""
-    if request.method == "POST":
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        category = Category.objects.get(name=request.POST.get("category"))
-        price = float(request.POST.get("price")) if float(request.POST.get("price")) >= 0 else 0
-        image = request.POST.get("image")
-        print(request.POST)
+    model = Product
+    form_class = ProductCreateForm
 
-        Product.objects.create(name=name, description=description, category=category, price=price, image=image)
-
+    def form_valid(self, form):
+        """Метод для обработки POST-запросов."""
+        form.save()
+        name = self.request.POST.get("name")
         context = {
             "h1": f"Товар {name} успешно добавлен!",
             "h3": "Обновите главную страницу, чтобы увидеть изменения.",
         }
-        return render(request, "catalog/message.html", context)
-
-    context = {"categories": Category.objects.all()}
-    return render(request, "catalog/add_product_form.html", context)
+        return render(self.request, "catalog/message.html", context)

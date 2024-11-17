@@ -22,11 +22,11 @@
                         <p class="fs-6 fw-light">{{ product.description|truncatechars:100 }}</p>
                     </div>
                     <div class="card-footer bg-transparent border-top-0" style="height: 4rem;">
-                        <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-lg btn-block mb-4 btn-outline-primary position-sticky bottom-0">Подробнее</a>
+                        <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-lg btn-block mb-4 btn-outline-primary position-sticky bottom-0">Подробнее</a>
                     </div>
                 </div>
             </div>
-        {% else  %}
+        {% else %}
             <div class="card bg-secondary-subtle mb-4 box-shadow mx-5" style="height: 20rem; width: 17rem">
                 <div class="card-body text-center" style="height: 20rem">
                     <div class="d-flex justify-content-center align-items-center" style="height: 100%">
@@ -37,11 +37,21 @@
         {% endif %}
     {% endfor %}
 </div>
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center my-3">
-        {% for i in range %}
-        <li class="page-item"><a class="page-link" href="{% url 'catalog:index' i %}">{{ i|add:"1" }}</a></li>
-        {% endfor%}
-    </ul>
-</nav>
+<div class="pagination justify-content-center my-3">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
