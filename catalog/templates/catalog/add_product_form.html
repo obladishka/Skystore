@@ -1,0 +1,44 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+{% include "catalog/includes/inc_menu.html" %}
+<form method="post" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <label for="name" class="form-label">Наименование</label>
+        <input type="text" name="name" class="form-control mb-3" id="name" placeholder="Введите название товара" required>
+    </div>
+    <div class="col-md-4">
+        <label for="price" class="form-label" >Цена за покупку</label>
+        <input type="number" name="price" class="form-control mb-3" id="price" placeholder="Укажите цену товара с копейками" required>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-8">
+        <label for="description" class="form-label">Описание</label>
+        <input type="text" name="description" class="form-control mb-3" id="description" placeholder="Добавьте описание товара">
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <label for="category" class="form-label">Категория</label>
+        <select id="category" name="category" class="form-select mb-5">
+            <option selected>Выберите категорию товара</option>
+            {% for category in categories %}
+                <option>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="image" class="form-label">Изображение</label>
+        <input class="form-control mb-5" name="image" type="file" id="image" placeholder="Загрузите изображение товара">
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-8 text-center">
+        <button type="submit" class="btn btn-lg btn-primary">Добавить</button>
+    </div>
+    <div class="col-md-2"></div>
+</form>
+{% endblock %}
