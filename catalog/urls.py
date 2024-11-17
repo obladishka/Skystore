@@ -12,10 +12,6 @@ urlpatterns = [
     path("detail/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
     path("new/", ProductCreateView.as_view(), name="add_product"),
     path("contacts/", ContactsListViewWithPost.as_view(), name="contacts"),
-    # path("home/<int:page>/", home, name="index"),
-    # path("contacts/", contacts, name="contacts"),
-    # path("products/<int:id>/", product_detail, name="product_detail"),
-    # path("products/new/", add_product, name="add_product"),
 ]
 
 if settings.DEBUG:
