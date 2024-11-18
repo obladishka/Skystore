@@ -7,7 +7,7 @@ from blog.apps import BlogConfig
 app_name = BlogConfig.name
 
 urlpatterns = [
-    path(),
+    # path(),
 ]
 
 if settings.DEBUG:
