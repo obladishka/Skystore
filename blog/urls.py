@@ -3,11 +3,12 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from blog.apps import BlogConfig
+from blog.views import ArticleListView
 
 app_name = BlogConfig.name
 
 urlpatterns = [
-    # path(),
+    path("", ArticleListView.as_view(), name="article_list"),
 ]
 
 if settings.DEBUG:
