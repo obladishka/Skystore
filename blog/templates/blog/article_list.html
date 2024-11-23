@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
-            <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Продолжить чтение...</a></p>
+            <p class="lead mb-0"><a href="{% url 'blog:article_detail' top.pk %}" class="text-body-emphasis fw-bold">Продолжить чтение...</a></p>
             <p class="lead mb-0 text-body-tertiary fs-6">
                 {{ top.views_count }}
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="text-body-tertiary"
@@ -43,7 +43,7 @@
                     </div>
                     <p class="card-text mb-auto">{{ article.text|truncatechars:75 }}</p>
                     <div class="d-flex align-items-center">
-                        <a href="#" class="icon-link gap-1 icon-link-hover w-100">
+                        <a href="{% url 'blog:article_detail' article.pk %}" class="icon-link gap-1 icon-link-hover w-100">
                             Читать
                             <svg class="bi">
                                 <use xlink:href="#chevron-right"/>
