@@ -1,6 +1,5 @@
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from blog.forms import ArticleForm
 from blog.models import Article
@@ -54,3 +53,10 @@ class ArticleUpdateView(UpdateView):
         """Метод для перевода клиента на измененную статью после завершения редактирования."""
         success_url = reverse("blog:article_detail", args=[self.kwargs.get("pk")])
         return success_url
+
+
+class ArticleDeleteView(DeleteView):
+    """Класс для создания статей."""
+
+    model = Article
+    success_url = reverse_lazy("blog:article_list")

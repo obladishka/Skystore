@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="container text-center">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <h1>Вы действительно хотите удалить статью</h1>
+            <h1>"{{ article.title }}"?</h1>
+        </div>
+        <div class="d-flex justify-content-center gap-3">
+            <a type="button" class="btn btn-secondary" href="{% url 'blog:article_list' %}">Отмена</a>
+            <button type="submit" class="btn btn-danger">Подтвердить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

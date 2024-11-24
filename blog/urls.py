@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from blog.apps import BlogConfig
-from blog.views import ArticleCreateView, ArticleDetailView, ArticleListView, ArticleUpdateView
+from blog.views import ArticleCreateView, ArticleDeleteView, ArticleDetailView, ArticleListView, ArticleUpdateView
 
 app_name = BlogConfig.name
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path("<int:pk>/", ArticleDetailView.as_view(), name="article_detail"),
     path("new/", ArticleCreateView.as_view(), name="new_article"),
     path("<int:pk>/edit/", ArticleUpdateView.as_view(), name="edit_article"),
+    path("<int:pk>/delete/", ArticleDeleteView.as_view(), name="delete_article"),
 ]
 
 if settings.DEBUG:
