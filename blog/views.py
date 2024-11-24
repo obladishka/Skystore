@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from blog.forms import ArticleForm
 from blog.models import Article
@@ -43,7 +43,14 @@ class ArticleCreateView(CreateView):
     form_class = ArticleForm
     success_url = reverse_lazy("blog:article_list")
 
-    def get_context_data(self, object_list=None, **kwargs):
-        """Метод для расширения передаваемых данных."""
-        context = super().get_context_data(**kwargs)
-        return context
+
+class ArticleUpdateView(UpdateView):
+    """Класс для создания статей."""
+
+    model = Article
+    form_class = ArticleForm
+
+    def get_success_url(self):
+        """Метод для перевода клиента на измененную статью после завершения редактирования."""
+        success_url = reverse("blog:article_detail", args=[self.kwargs.get("pk")])
+        return success_url

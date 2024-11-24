@@ -4,7 +4,7 @@
     <div class="row g-5">
         <div class="col-3"></div>
         <div class="card col-6 bg-black text-white">
-            <h3 class="card-header mb-3">{% if request.resolver_match.view_name == 'blog:new_article' %}Новая статья {% else %}Редактировать статью{% endif %}</h3>
+            <h3 class="card-header mb-3">{% if request.resolver_match.view_name == 'blog:new_article' %}Новая статья{% else %}Редактировать статью{% endif %}</h3>
             <div class="card-body">
                 <form method="post" class="row g-3" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -23,7 +23,7 @@
                     <div class="col-12 text-center">
                         <button type="button" class="btn btn-dark" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
-                            Добавить
+                            {% if request.resolver_match.view_name == 'blog:new_article' %}Добавить{% else %}Сохранить{% endif %}
                         </button>
                     </div>
                     <!-- Modal -->
