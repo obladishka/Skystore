@@ -1,4 +1,7 @@
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
+from django.utils.html import strip_tags
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from blog.forms import ArticleForm
@@ -31,6 +34,10 @@ class ArticleDetailView(DetailView):
         """Метод для увеличения количества просмотров статьи."""
         self.object = super().get_object(queryset)
         self.object.views_count += 1
+
+        if self.object.views_count == 100:
+            send_congratulations(self.request, self.object)
+
         self.object.save()
         return self.object
 
@@ -60,3 +67,17 @@ class ArticleDeleteView(DeleteView):
 
     model = Article
     success_url = reverse_lazy("blog:article_list")
+
+
+def send_congratulations(request, article):
+    """Функция для отправки поздравления."""
+
+    context = {
+        "article": article,
+    }
+
+    subject = "Поздравляем!"
+    html_message = render_to_string("blog/congratulations.html", context)
+    plain_message = strip_tags(html_message)
+
+    send_mail(subject, plain_message, None, ["nasty-goldyba@yandex.ru"], html_message=html_message)
