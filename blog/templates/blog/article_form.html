@@ -1,0 +1,60 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<main class="container">
+    <div class="row g-5">
+        <div class="col-3"></div>
+        <div class="card col-6 bg-black text-white">
+            <h3 class="card-header mb-3">{% if request.resolver_match.view_name == 'blog:new_article' %}Новая статья{% else %}Редактировать статью{% endif %}</h3>
+            <div class="card-body">
+                <form method="post" class="row g-3" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-6">
+                        <p>{{ form.title.label_tag }} *</p>
+                        {{ form.title }}
+                    </div>
+                    <div class="col-6">
+                        <p>{{ form.preview.label_tag }}</p>
+                        {{ form.preview }}
+                    </div>
+                    <div class="col-12">
+                        <p>{{ form.text.label_tag }} *</p>
+                        {{ form.text }}
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            {% if request.resolver_match.view_name == 'blog:new_article' %}Добавить{% else %}Сохранить{% endif %}
+                        </button>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog text-black">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <p class="modal-title fs-5" id="exampleModalLabel">Спасибо!</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {% if request.resolver_match.view_name == 'blog:new_article' %}
+                                    Ваша статья была успешно добавлена!
+                                    {% else %}
+                                    Ваша статья была успешно изменена!
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="d-flex gap-3">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+{% endblock %}
