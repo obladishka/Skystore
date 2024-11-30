@@ -3,28 +3,28 @@ from django import forms
 from catalog.models import Product
 
 
-class ProductCreateForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "image", "category", "price"]
+        exclude = ("created_at", "updated_at")
 
-        widgets = {
-            "name": forms.TextInput(
-                attrs={"class": "form-control mb-3 mt-1", "placeholder": "Введите название товара", "required": True}
-            ),
-            "description": forms.TextInput(
-                attrs={"class": "form-control mb-3 mt-1", "placeholder": "Добавьте описание товара"}
-            ),
-            "image": forms.FileInput(
-                attrs={"class": "form-control mb-5 mt-1", "placeholder": "Загрузите изображение товара"}
-            ),
-            "category": forms.Select(attrs={"class": "form-select mb-5 my-1"}),
-            "price": forms.NumberInput(
-                attrs={
-                    "class": "form-control mb-3 mt-1",
-                    "placeholder": "Укажите цену товара с копейками",
-                    "required": True,
-                    "step": "0.01",
-                }
-            ),
-        }
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        self.fields["name"].widget.attrs.update(
+            {"class": "form-control mb-3 mt-1", "placeholder": "Введите название товара", "required": True}
+        )
+        self.fields["description"].widget.attrs.update(
+            {"class": "form-control mb-3 mt-1", "placeholder": "Добавьте описание товара"}
+        )
+        self.fields["image"].widget.attrs.update(
+            {"class": "form-control mb-5 mt-1", "placeholder": "Загрузите изображение товара"}
+        )
+        self.fields["category"].widget.attrs.update({"class": "form-select mb-5 my-1"})
+        self.fields["price"].widget.attrs.update(
+            {
+                "class": "form-control mb-3 mt-1",
+                "placeholder": "Укажите цену товара с копейками",
+                "required": True,
+                "step": "0.01",
+            }
+        )

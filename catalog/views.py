@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, ListView
 
-from catalog.forms import ProductCreateForm
+from catalog.forms import ProductForm
 from catalog.models import Contacts, Product
 
 
@@ -45,7 +45,7 @@ class ProductCreateView(CreateView):
     """Класс для добавления товаров."""
 
     model = Product
-    form_class = ProductCreateForm
+    form_class = ProductForm
 
     def form_valid(self, form):
         """Метод для обработки POST-запросов."""

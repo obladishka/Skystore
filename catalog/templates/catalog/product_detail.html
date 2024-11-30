@@ -10,7 +10,7 @@
           <div class="position-relative overflow-hidden p-3 text-center border-0 bg-body-tertiary bg-opacity-75 shadow-lg p-3 mb-5">
               <div class="p-5 mx-auto">
                   <h1 class="display-3 text-dark fw-bold">{{ product.name|upper }}</h1>
-                  <h3 class="fw-normal text-muted mb-3">{{ product.description }}</h3>
+                  <h3 class="fw-normal text-muted mb-3">{{ product.description|linebreaks }}</h3>
                   <h2 class="display-3 text-dark fw-bold my-5">$ {{ product.price }}</h2>
                   <div class="d-flex gap-3 justify-content-center lead fw-normal mt-2 align-items-center">
                       <a class="btn btn-primary btn-lg" href="#">
