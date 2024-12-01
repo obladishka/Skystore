@@ -4,7 +4,7 @@ from catalog.models import Product
 
 
 class ProductForm(forms.ModelForm):
-    image = forms.ImageField(widget=forms.FileInput)
+    image = forms.ImageField(widget=forms.FileInput, required=False)
 
     class Meta:
         model = Product

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm
 from catalog.models import Contacts, Product
@@ -64,4 +64,11 @@ class ProductUpdateView(UpdateView):
 
     model = Product
     form_class = ProductForm
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductDeleteView(DeleteView):
+    """Класс для удаления товара."""
+
+    model = Product
     success_url = reverse_lazy("catalog:product_list")
