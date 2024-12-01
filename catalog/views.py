@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from catalog.forms import ProductForm
 from catalog.models import Contacts, Product
@@ -56,3 +57,11 @@ class ProductCreateView(CreateView):
             "h3": "Обновите главную страницу, чтобы увидеть изменения.",
         }
         return render(self.request, "catalog/message.html", context)
+
+
+class ProductUpdateView(UpdateView):
+    """Класс для изменения товара."""
+
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("catalog:product_list")

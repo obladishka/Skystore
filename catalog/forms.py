@@ -4,6 +4,8 @@ from catalog.models import Product
 
 
 class ProductForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.FileInput)
+
     class Meta:
         model = Product
         exclude = ("created_at", "updated_at")
