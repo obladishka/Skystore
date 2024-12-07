@@ -5,14 +5,11 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 
 from catalog.models import Product
+from config.settings import ALLOWED_EXTENSIONS, BANNED_WORDS, MAX_UPLOAD_SIZE
 
 
 class ProductForm(forms.ModelForm):
     """Форма для добавления или редактирования товара."""
-
-    BANNED_WORDS = ("казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар")
-    ALLOWED_EXTENSIONS = ("jpeg", "png")
-    MAX_UPLOAD_SIZE = 5242880
 
     image = forms.ImageField(widget=forms.FileInput, required=False, validators=[
         FileExtensionValidator(ALLOWED_EXTENSIONS, message="Выберите файл в формате jpeg или png")])
@@ -46,18 +43,18 @@ class ProductForm(forms.ModelForm):
     def clean_name(self):
         """Метод для проверки отсутствия запрещенных слов в названии товара."""
         name = self.cleaned_data.get("name")
-        if any(re.search(word, name, flags=re.IGNORECASE) for word in self.BANNED_WORDS):
+        if any(re.search(word, name, flags=re.IGNORECASE) for word in BANNED_WORDS):
             raise ValidationError(
-                f"В названии содержится запрещенное слово. Список запрещенных слов: {', '.join(self.BANNED_WORDS)}"
+                f"В названии содержится запрещенное слово. Список запрещенных слов: {', '.join(BANNED_WORDS)}"
             )
         return name
 
     def clean_description(self):
         """Метод для проверки отсутствия запрещенных слов в описании товара."""
         description = self.cleaned_data.get("description")
-        if any(re.search(word, description, flags=re.IGNORECASE) for word in self.BANNED_WORDS):
+        if any(re.search(word, description, flags=re.IGNORECASE) for word in BANNED_WORDS):
             raise ValidationError(
-                f"В описании содержится запрещенное слово. Список запрещенных слов: {', '.join(self.BANNED_WORDS)}"
+                f"В описании содержится запрещенное слово. Список запрещенных слов: {', '.join(BANNED_WORDS)}"
             )
         return description
 
@@ -71,6 +68,6 @@ class ProductForm(forms.ModelForm):
     def clean_image(self):
         """Метод для проверки изображения товара."""
         image = self.cleaned_data.get("image")
-        if image.size > self.MAX_UPLOAD_SIZE:
+        if image.size > MAX_UPLOAD_SIZE:
             raise ValidationError("Размер файла не может превышать 5МВ.")
         return image
