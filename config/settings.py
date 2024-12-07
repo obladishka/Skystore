@@ -133,3 +133,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 SERVER_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+BANNED_WORDS = ("казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар")
+ALLOWED_EXTENSIONS = ("jpeg", "png")
+MAX_UPLOAD_SIZE = 5242880

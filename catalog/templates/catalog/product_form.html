@@ -1,39 +1,45 @@
 {% extends "catalog/base.html" %}
 
 {% block content %}
-{% include "catalog/includes/inc_menu.html" %}
-<form method="post" class="row g-3" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="col-md-2"></div>
-    <div class="col-md-4">
-        {{ form.name.label_tag }}
-        {{ form.name }}
-    </div>
-    <div class="col-md-4">
-        {{ form.price.label_tag }}
-        {{ form.price }}
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-8">
-        {{ form.description.label_tag }}
-        {{ form.description }}
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-md-4">
-        {{ form.category.label_tag }}
-        {{ form.category }}
-    </div>
-    <div class="col-md-4">
-        {{ form.image.label_tag }}
-        {{ form.image }}
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-8 text-center">
-        <button type="submit" class="btn btn-lg btn-primary">Добавить</button>
-    </div>
-    <div class="col-md-2"></div>
-</form>
-{% endblock %}
+<main class="container">
+    <div class="row g-5">
+        <div class="col-3"></div>
+        <div class="card col-6 bg-black text-white">
+            <h3 class="card-header mb-3">{% if object %}Изменить товар{% else %}Добавить товар{% endif %}</h3>
+            <div class="card-body">
+                <form method="post" class="row g-3" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-6">
+                        {{ form.name.label_tag }} *
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.price.label_tag }} *
+                        {{ form.price }}
+                        {{ form.price.errors }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {{ form.description.errors }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.category.label_tag }} *
+                        {{ form.category }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.image.label_tag }}
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-dark">
+                            {% if object %}Сохранить{% else %}Добавить{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-3"></div>
+        {% endblock %}

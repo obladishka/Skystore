@@ -1,5 +1,9 @@
-{% extends "blog/base.html" %}
+{% extends "catalog/base.html" %}
 {% load my_tags %}
+{% block title %}SkyBlog{% endblock %}
+{% block add %}
+    <a class="btn btn-sm btn-outline-dark" href="{% url 'blog:new_article' %}">+ Новый пост</a>
+{% endblock %}
 {% block content %}
 <main class="container">
     <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
@@ -13,7 +17,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
-            <p class="lead mb-0"><a href="{% url 'blog:article_detail' top.pk %}" class="text-body-emphasis fw-bold">Продолжить чтение...</a></p>
+            <p class="lead mb-0"><a href="{% url 'blog:article_detail' top.pk %}" class="text-body-emphasis fw-bold">Продолжить
+                чтение...</a></p>
             <p class="lead mb-0 text-body-tertiary fs-6">
                 {{ top.views_count }}
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="text-body-tertiary"
@@ -43,14 +48,16 @@
                     </div>
                     <p class="card-text mb-auto">{{ article.text|truncatechars:75 }}</p>
                     <div class="d-flex align-items-center">
-                        <a href="{% url 'blog:article_detail' article.pk %}" class="icon-link gap-1 icon-link-hover w-100">
+                        <a href="{% url 'blog:article_detail' article.pk %}"
+                           class="icon-link gap-1 icon-link-hover w-100">
                             Читать
                             <svg class="bi">
                                 <use xlink:href="#chevron-right"/>
                             </svg>
                         </a>
                         <div id="axis" class="flex-shrink-1">
-                            <a type="button" class="btn btn-link text-black-50 move-up" href="{% url 'blog:edit_article' article.pk %}">
+                            <a type="button" class="btn btn-link text-black-50 move-up"
+                               href="{% url 'blog:edit_article' article.pk %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -60,7 +67,8 @@
                             </a>
                         </div>
                         <div id="axis" class="flex-shrink-1">
-                            <a type="button" class="btn btn-link link-danger link-underline-opacity-0 move-up" href="{% url 'blog:delete_article' article.pk %}">
+                            <a type="button" class="btn btn-link link-danger link-underline-opacity-0 move-up"
+                               href="{% url 'blog:delete_article' article.pk %}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-trash3" viewBox="0 0 16 16">
                                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>

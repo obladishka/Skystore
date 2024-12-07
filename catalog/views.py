@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
 
-from catalog.forms import ProductCreateForm
+from catalog.forms import ProductForm
 from catalog.models import Contacts, Product
 
 
@@ -45,7 +46,7 @@ class ProductCreateView(CreateView):
     """Класс для добавления товаров."""
 
     model = Product
-    form_class = ProductCreateForm
+    form_class = ProductForm
 
     def form_valid(self, form):
         """Метод для обработки POST-запросов."""
@@ -56,3 +57,18 @@ class ProductCreateView(CreateView):
             "h3": "Обновите главную страницу, чтобы увидеть изменения.",
         }
         return render(self.request, "catalog/message.html", context)
+
+
+class ProductUpdateView(UpdateView):
+    """Класс для изменения товара."""
+
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductDeleteView(DeleteView):
+    """Класс для удаления товара."""
+
+    model = Product
+    success_url = reverse_lazy("catalog:product_list")
