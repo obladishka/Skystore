@@ -44,6 +44,7 @@ class User(AbstractUser):
     country = models.CharField(
         max_length=30, choices=COUNTRIES, verbose_name="Страна", help_text="Выберите страну", null=True, blank=True
     )
+    remember_me = models.BooleanField(default=False, verbose_name="Запомнить меня")
 
     objects = UserManager()
 
