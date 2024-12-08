@@ -13,8 +13,8 @@
                         <a type="button" class="btn btn-outline-dark" style="width:7rem" href="{% url 'users:login' %}">Вход</a>
                         <a type="button" class="btn btn-dark" href="{% url 'users:register' %}">Регистрация</a>
                         {% else %}
-                        <button type="button" class="btn btn-dark" style="width:7rem">Вход</button>
-                        <button type="button" class="btn btn-outline-dark">Регистрация</button>
+                        <a type="button" class="btn btn-dark" style="width:7rem" href="{% url 'users:login' %}">Вход</a>
+                        <a type="button" class="btn btn-outline-dark" href="{% url 'users:register' %}">Регистрация</a>
                         {% endif %}
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                             {% if request.resolver_match.view_name == 'users:register' %}Зарегистрироваться{% else %}Войти{% endif %}
                         </button>
                         {% if request.resolver_match.view_name == 'users:login' %}
-                        <p>
+                        <p class="mt-2 mb-0">
                             Нет аккаунта?
                             <a href="{% url 'users:register' %}" class="link">
                                 Зарегистрироваться

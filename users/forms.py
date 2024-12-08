@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from users.models import User
@@ -8,7 +9,7 @@ class UserForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("email", "password1", "password2", "remember_me")
+        fields = ("email", "password1", "password2")
 
     def __init__(self, *args, **kwargs):
         """Метод для стилизации формы."""
@@ -29,15 +30,16 @@ class UserForm(UserCreationForm):
         self.fields["password2"].widget.attrs.update(
             {"class": "form-control", "placeholder": "Повторите пароль", "required": True}
         )
-        self.fields["remember_me"].widget.attrs.update({"class": "form-check-input"})
 
 
 class UserAuthenticationForm(AuthenticationForm):
     """Форма для авторизации пользователей."""
 
+    remember_me = forms.BooleanField(required=False)
+
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ("email", "password", "remember_me")
 
     def __init__(self, *args, **kwargs):
         """Метод для стилизации формы."""
@@ -46,3 +48,5 @@ class UserAuthenticationForm(AuthenticationForm):
             {"class": "form-control", "placeholder": "name@example.com", "required": True}
         )
         self.fields["password"].widget.attrs.update({"class": "form-control", "required": True})
+        self.fields["remember_me"].widget.attrs.update({"class": "form-check-input"})
+        self.fields["remember_me"].label = "Запомнить меня"

@@ -1,4 +1,6 @@
 {% extends "catalog/base.html" %}
+{% load my_tags %}
+{% load static %}
 
 {% block add %}
 {% if not user.is_authenticated %}
@@ -6,9 +8,31 @@
     Войти
 </a>
 {% else %}
-<a class="btn btn-sm btn-outline-dark" href="{% url 'blog:new_article' %}">
-    Выйти
-</a>
+<div class="col-4"></div>
+<div class="col-8 text-end">
+    <div class="dropdown-center">
+        <a class="nav-link link-body-emphasis dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+           aria-expanded="false">
+            {% if user.username %}{{ user.username }}{% else %}{{ user.email }}{% endif %}
+            <img src="{% if user.avatar %}{{ user.avatar | media_filter }}{% else %}{% static 'img/avatar_placeholder.png' %}{% endif %}"
+                 class="rounded-circle" style="width:15%">
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <button class="dropdown-item" type="button">Личный кабинет</button>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Выход</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
 {% endif %}
 {% endblock %}
 

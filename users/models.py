@@ -32,7 +32,9 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     """Класс для создания пользователя."""
 
-    username = None
+    username = models.CharField(
+        max_length=50, verbose_name="Имя пользователя", help_text="Введите имя пользователя", null=True, blank=True
+    )
     email = models.EmailField(unique=True, verbose_name="Email", help_text="Введите свой email")
     avatar = models.ImageField(
         upload_to="users/",
@@ -44,7 +46,7 @@ class User(AbstractUser):
     country = models.CharField(
         max_length=30, choices=COUNTRIES, verbose_name="Страна", help_text="Выберите страну", null=True, blank=True
     )
-    remember_me = models.BooleanField(default=False, verbose_name="Запомнить меня")
+    token = models.CharField(max_length=100, verbose_name="Токен", null=True, blank=True)
 
     objects = UserManager()
 
