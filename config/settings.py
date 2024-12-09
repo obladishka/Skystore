@@ -132,6 +132,7 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = "catalog:product_list"
 LOGOUT_REDIRECT_URL = "catalog:product_list"
+LOGIN_URL = "users:login"
 
 BANNED_WORDS = ("казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар")
 ALLOWED_EXTENSIONS = ("jpeg", "png")
