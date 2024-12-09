@@ -138,7 +138,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <button class="dropdown-item" type="button">Личный кабинет</button>
+                                <a class="dropdown-item" type="button" href="{% url 'users:user_account' user.pk %}">Личный кабинет</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">

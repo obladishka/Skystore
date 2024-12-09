@@ -1,0 +1,91 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+{% load static %}
+
+{% block content %}
+<main class="container mt-5">
+    {% if request.resolver_match.view_name == 'users:edit_user' %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+    {% endif %}
+    <div class="row g-5">
+            <div class="col-4 ms-5 text-start">
+                <img src="{% if user.avatar %}{{ user.avatar | media_filter }}{% else %}{% static 'img/avatar_placeholder.png' %}{% endif %}"
+                     class="rounded-circle mb-2" style="width:30%">
+                {{ form.avatar }}
+                <div class="d-flex align-items-end gap-3">
+                    <p class="fw-semibold fs-5 lh-sm mt-2 py-0 mb-0">{{ user.username | default:"User" }}</p>
+                    <a type="button" class="btn btn-link text-secondary py-0 mb-0" href="{% url 'users:edit_user' user.pk %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="fs-6 text-secondary lh-sm py-0 mt-0 mb-4">{{ user.email }}</p>
+                <div class="list-group-flush mt-1 fs-5">
+                    <a href="#" class="list-group-item fw-semibold">
+                        Персональные данные
+                    </a>
+                    <a href="#" class="list-group-item">
+                        Мои товары
+                    </a>
+                </div>
+            </div>
+            <div class="col-7 me-5 text-start">
+                <p class="fs-3 fw-bold mb-2 pt-0 mt-0">Персональные данные</p>
+                <p class="fs-6 text-secondary mb-5 pt-0 mt-0">Здесь Вы можете изменить или дополнить информацию о
+                    себе.</p>
+                <div class="row mt-5">
+                    <div class="col-sm-6 mb-sm-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <p class="card-title fs-5 fw-semibold ">Имя пользователя</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                                         class="bi bi-person-circle text-secondary" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                        <path fill-rule="evenodd"
+                                              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                    </svg>
+                                </div>
+                                {% if request.resolver_match.view_name == 'users:edit_user' %}
+                                {{ form.username }}
+                                {% else %}
+                                <p class="card-text fs-6 text-secondary">{{ user.username | default:"User" }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-sm-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <p class="card-title fs-5 fw-semibold ">Страна</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                                         class="bi bi-globe text-secondary" viewBox="0 0 16 16">
+                                        <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
+                                    </svg>
+                                </div>
+                                {% if request.resolver_match.view_name == 'users:edit_user' %}
+                                {{ form.country }}
+                                {% else %}
+                                <p class="card-text fs-6 text-secondary">{{ user.get_country_display | default:"Country" }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if request.resolver_match.view_name == 'users:edit_user' %}
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-dark mb-2">Сохранить изменения</button>
+                </div>
+                {% endif %}
+            </div>
+    </div>
+    {% if request.resolver_match.view_name == 'users:edit_user' %}
+    </form>
+    {% endif %}
+    {% endblock %}

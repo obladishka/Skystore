@@ -6,9 +6,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.html import strip_tags
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView, UpdateView
 
-from users.forms import UserAuthenticationForm, UserForm
+from users.forms import UserAuthenticationForm, UserForm, UserUpdateForm
 from users.models import User
 
 
@@ -61,6 +61,25 @@ class UserLoginView(LoginView):
             self.request.session.set_expiry(0)
             self.request.session.modified = True
         return super().form_valid(form)
+
+
+class UserDetailView(DetailView):
+    """Класс для отображения личного кабинета пользователя."""
+
+    model = User
+    template_name = "users/user_form.html"
+
+
+class UserUpdateView(UpdateView):
+    """Класс для изменения личных данных пользователя."""
+
+    model = User
+    form_class = UserUpdateForm
+
+    def get_success_url(self):
+        """Метод для получения кастомного URL-адреса."""
+        success_url = reverse("users:user_account", args=[self.kwargs.get("pk")])
+        return success_url
 
 
 def user_verification(request, token):

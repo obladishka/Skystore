@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
 
 from users.models import User
 
@@ -50,3 +50,22 @@ class UserAuthenticationForm(AuthenticationForm):
         self.fields["password"].widget.attrs.update({"class": "form-control", "required": True})
         self.fields["remember_me"].widget.attrs.update({"class": "form-check-input"})
         self.fields["remember_me"].label = "Запомнить меня"
+
+
+class UserUpdateForm(UserChangeForm):
+    """Форма для изменения данных пользователя."""
+
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "avatar",
+            "country",
+        )
+
+    def __init__(self, *args, **kwargs):
+        """Метод для стилизации формы."""
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs.update({"class": "form-control"})
+        self.fields["avatar"].widget.attrs.update({"class": "form-control"})
+        self.fields["country"].widget.attrs.update({"class": "form-select"})
