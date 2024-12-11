@@ -5,6 +5,7 @@
     <a class="btn btn-sm btn-outline-dark" href="{% url 'blog:new_article' %}">+ Новый пост</a>
 {% endblock %}
 {% block content %}
+{% include "catalog/includes/inc_menu.html" %}
 <main class="container">
     <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
         <div class="row">

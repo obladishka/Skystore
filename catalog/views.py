@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
@@ -22,7 +23,7 @@ class ProductListView(ListView):
         return queryset
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     """Класс для отображения страницы конкретного товара."""
 
     model = Product
@@ -42,7 +43,7 @@ class ContactsListViewWithPost(ListView):
         return render(request, "catalog/message.html", context)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Класс для добавления товаров."""
 
     model = Product
@@ -59,7 +60,7 @@ class ProductCreateView(CreateView):
         return render(self.request, "catalog/message.html", context)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Класс для изменения товара."""
 
     model = Product
@@ -67,7 +68,7 @@ class ProductUpdateView(UpdateView):
     success_url = reverse_lazy("catalog:product_list")
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Класс для удаления товара."""
 
     model = Product
