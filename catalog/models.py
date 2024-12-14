@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
     """Таблица категорий товаров."""
@@ -43,6 +45,15 @@ class Product(models.Model):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="цена за покупку", help_text="Укажите цену товара с копейками"
     )
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="products",
+        verbose_name="владелец",
+        null=True,
+        blank=True,
+    )
+    is_published = models.BooleanField(default=True, verbose_name="опубликован")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 
@@ -52,6 +63,9 @@ class Product(models.Model):
     class Meta:
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
+        permissions = [
+            ("can_unpublish_product", "может отменять публикацию продукта"),
+        ]
 
 
 class Contacts(models.Model):
