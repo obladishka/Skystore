@@ -2,7 +2,9 @@
 {% load my_tags %}
 {% block title %}SkyBlog{% endblock %}
 {% block add %}
+{% if perms.blog.add_article %}
     <a class="btn btn-sm btn-outline-dark" href="{% url 'blog:new_article' %}">+ Новый пост</a>
+{% endif %}
 {% endblock %}
 {% block content %}
 {% include "catalog/includes/inc_menu.html" %}
@@ -56,6 +58,7 @@
                                 <use xlink:href="#chevron-right"/>
                             </svg>
                         </a>
+                        {% if perms.blog.change_article %}
                         <div id="axis" class="flex-shrink-1">
                             <a type="button" class="btn btn-link text-black-50 move-up"
                                href="{% url 'blog:edit_article' article.pk %}">
@@ -67,6 +70,8 @@
                                 </svg>
                             </a>
                         </div>
+                        {% endif %}
+                        {% if perms.blog.delete_article %}
                         <div id="axis" class="flex-shrink-1">
                             <a type="button" class="btn btn-link link-danger link-underline-opacity-0 move-up"
                                href="{% url 'blog:delete_article' article.pk %}">
@@ -76,6 +81,7 @@
                                 </svg>
                             </a>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-auto d-none d-lg-block">

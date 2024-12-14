@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
@@ -42,19 +43,21 @@ class ArticleDetailView(DetailView):
         return self.object
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Класс для создания статей."""
 
     model = Article
     form_class = ArticleForm
     success_url = reverse_lazy("blog:article_list")
+    permission_required = "blog.add_article"
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """Класс для создания статей."""
 
     model = Article
     form_class = ArticleForm
+    permission_required = "blog.change_article"
 
     def get_success_url(self):
         """Метод для перевода клиента на измененную статью после завершения редактирования."""
@@ -62,11 +65,12 @@ class ArticleUpdateView(UpdateView):
         return success_url
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """Класс для создания статей."""
 
     model = Article
     success_url = reverse_lazy("blog:article_list")
+    permission_required = "blog.delete_article"
 
 
 def send_congratulations(request, article):
