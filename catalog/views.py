@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from catalog.forms import ProductForm, ProductModeratorForm
-from catalog.models import Contacts, Product
+from catalog.models import Category, Contacts, Product
+from catalog.services import ProductService
 
 
 class ProductListView(ListView):
@@ -92,3 +93,18 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if user == product.owner or user.has_perm("catalog.delete_product"):
             return product
         raise PermissionDenied
+
+
+class CategoryDetailView(DetailView):
+    """Класс для вывода списка товаров определенной категории."""
+
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        """Метод для добавления дополнительных параметров в контекст."""
+
+        context = super().get_context_data(**kwargs)
+        category_id = self.object.id
+        context["product_list"] = ProductService.get_products_by_category(category_id)
+
+        return context

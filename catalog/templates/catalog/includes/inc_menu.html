@@ -12,10 +12,11 @@
                 <li><a class="dropdown-item" href="{% url 'catalog:contacts' %}">Контакты</a></li>
             </ul>
         </li>
+        {% for category in categories %}
         <li class="nav-item">
-            <a class="nav-item nav-link link-body-emphasis" href="#">Рассылки</a>
+            <a class="nav-item nav-link link-body-emphasis {% if request.resolver_match.kwargs.pk == category.pk %}fw-semibold{% endif %}" href="{% url 'catalog:category_detail' category.pk %}">{{ category.name | title }}</a>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
             <a class="nav-item nav-link link-body-emphasis" href="#">Телеграм боты</a>
         </li>
         <li class="nav-item">
@@ -26,6 +27,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-item nav-link link-body-emphasis" href="#">Микросервисы</a>
-        </li>
+        </li>-->
+        {% endfor %}
     </ul>
 </div>
