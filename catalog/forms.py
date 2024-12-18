@@ -11,12 +11,15 @@ from config.settings import ALLOWED_EXTENSIONS, BANNED_WORDS, MAX_UPLOAD_SIZE
 class ProductForm(forms.ModelForm):
     """Форма для добавления или редактирования товара."""
 
-    image = forms.ImageField(widget=forms.FileInput, required=False, validators=[
-        FileExtensionValidator(ALLOWED_EXTENSIONS, message="Выберите файл в формате jpeg или png")])
+    image = forms.ImageField(
+        widget=forms.FileInput,
+        required=False,
+        validators=[FileExtensionValidator(ALLOWED_EXTENSIONS, message="Выберите файл в формате jpeg или png")],
+    )
 
     class Meta:
         model = Product
-        exclude = ("created_at", "updated_at")
+        exclude = ("owner", "created_at", "updated_at")
 
     def __init__(self, *args, **kwargs):
         """Метод для стилизации формы."""
@@ -39,6 +42,7 @@ class ProductForm(forms.ModelForm):
                 "step": "0.01",
             }
         )
+        self.fields["is_published"].widget.attrs.update({"class": "form-check-input"})
 
     def clean_name(self):
         """Метод для проверки отсутствия запрещенных слов в названии товара."""
@@ -68,6 +72,14 @@ class ProductForm(forms.ModelForm):
     def clean_image(self):
         """Метод для проверки изображения товара."""
         image = self.cleaned_data.get("image")
-        if image.size > MAX_UPLOAD_SIZE:
+        if image and image.size > MAX_UPLOAD_SIZE:
             raise ValidationError("Размер файла не может превышать 5МВ.")
         return image
+
+
+class ProductModeratorForm(forms.ModelForm):
+    """Форма для редактирования товара, доступная для модератора."""
+
+    class Meta:
+        model = Product
+        fields = ("is_published",)

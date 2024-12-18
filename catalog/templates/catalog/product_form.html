@@ -9,6 +9,12 @@
             <div class="card-body">
                 <form method="post" class="row g-3" enctype="multipart/form-data">
                     {% csrf_token %}
+                    {% if object and user != object.owner %}
+                    <div class="col-12">
+                        {{ form.is_published.label_tag }}
+                        {{ form.is_published }}
+                    </div>
+                    {% else %}
                     <div class="col-6">
                         {{ form.name.label_tag }} *
                         {{ form.name }}
@@ -33,6 +39,11 @@
                         {{ form.image }}
                         {{ form.image.errors }}
                     </div>
+                    <div class="col-12">
+                        {{ form.is_published.label_tag }}
+                        {{ form.is_published }}
+                    </div>
+                    {% endif %}
                     <div class="col-12 text-center">
                         <button type="submit" class="btn btn-dark">
                             {% if object %}Сохранить{% else %}Добавить{% endif %}

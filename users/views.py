@@ -6,8 +6,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.html import strip_tags
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
+from catalog.models import Product
 from users.forms import UserAuthenticationForm, UserForm, UserUpdateForm
 from users.models import User
 
@@ -80,6 +81,21 @@ class UserUpdateView(UpdateView):
         """Метод для получения кастомного URL-адреса."""
         success_url = reverse("users:user_account", args=[self.kwargs.get("pk")])
         return success_url
+
+
+class UserProductListView(ListView):
+    """Класс для просмотра товаров пользователя."""
+
+    model = User
+    template_name = "users/user_product_list.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.has_perm("catalog.can_unpublish_product"):
+            return Product.objects.all()
+        return user.products.all()
 
 
 def user_verification(request, token):

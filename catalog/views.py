@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ProductModeratorForm
 from catalog.models import Contacts, Product
 
 
@@ -14,11 +15,10 @@ class ProductListView(ListView):
     template_name = "catalog/product_list.html"
     paginate_by = 3
     context_object_name = "products"
-    ordering = "-created_at"
 
     def get_queryset(self):
         """Метод для изменения полученных данных."""
-        queryset = list(super().get_queryset())
+        queryset = list(self.model.objects.filter(is_published=True).order_by("-created_at"))
         queryset.append(None)
         return queryset
 
@@ -51,7 +51,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """Метод для обработки POST-запросов."""
-        form.save()
+        product = form.save()
+        product.owner = self.request.user
+        product.save()
         name = self.request.POST.get("name")
         context = {
             "h1": f"Товар {name} успешно добавлен!",
@@ -64,8 +66,17 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Класс для изменения товара."""
 
     model = Product
-    form_class = ProductForm
     success_url = reverse_lazy("catalog:product_list")
+
+    def get_form_class(self):
+        """Метод для изменения формы в зависимости от прав пользователя."""
+        user = self.request.user
+
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_unpublish_product"):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
@@ -73,3 +84,11 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
     model = Product
     success_url = reverse_lazy("catalog:product_list")
+
+    def get_object(self, queryset=None):
+        """Метод для проверки прав на удаление товара."""
+        product = super().get_object(queryset)
+        user = self.request.user
+        if user == product.owner or user.has_perm("catalog.delete_product"):
+            return product
+        raise PermissionDenied

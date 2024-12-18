@@ -1,0 +1,50 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+{% load static %}
+
+{% block content %}
+<main class="container mt-5">
+    {% if request.resolver_match.view_name == 'users:edit_user' %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% endif %}
+        <div class="row g-5">
+            <div class="col-4 ms-5 text-start">
+                <img src="{% if user.avatar %}{{ user.avatar | media_filter }}{% else %}{% static 'img/avatar_placeholder.png' %}{% endif %}"
+                     class="rounded-circle mb-2" style="width:30%">
+                {{ form.avatar }}
+                <div class="d-flex align-items-end gap-3">
+                    <p class="fw-semibold fs-5 lh-sm mt-2 py-0 mb-0">{{ user.username | default:"User" }}</p>
+                    <a type="button" class="btn btn-link text-secondary py-0 mb-0"
+                       href="{% url 'users:edit_user' user.pk %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="fs-6 text-secondary lh-sm py-0 mt-0 mb-4">{{ user.email }}</p>
+                <div class="list-group-flush mt-1 fs-5">
+                    <a href="{% url 'users:user_account' user.pk %}"
+                       class="list-group-item {% if request.resolver_match.view_name != 'users:user_product_list' %}fw-semibold{% endif %}">
+                        Персональные данные
+                    </a>
+                    <a href="{% url 'users:user_product_list' user.pk %}"
+                       class="list-group-item {% if request.resolver_match.view_name == 'users:user_product_list' %}fw-semibold{% endif %}">
+                        {% if perms.catalog.can_unpublish_product %}Товары{% else %}Мои товары{% endif %}
+                    </a>
+                </div>
+            </div>
+            {% block data %}{% endblock %}
+            {% if request.resolver_match.view_name == 'users:edit_user' %}
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-dark mb-2">Сохранить изменения</button>
+            </div>
+            {% endif %}
+        </div>
+        {% if request.resolver_match.view_name == 'users:edit_user' %}
+    </form>
+    {% endif %}
+    {% endblock %}

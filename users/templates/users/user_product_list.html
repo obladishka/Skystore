@@ -1,0 +1,28 @@
+{% extends "users/base_account.html" %}
+{% load my_tags %}
+
+{% block data %}
+<div class="col-7 me-5 text-start">
+    <p class="fs-3 fw-bold mb-2 pt-0 mt-0">Мои товары</p>
+    <p class="fs-6 text-secondary mb-5 pt-0 mt-0">Здесь Вы можете легко управлять своими товарами, изменять и удалять
+        их.</p>
+    <div class="row mt-5">
+        {% for product in products %}
+        <div class="col-sm-6 mb-sm-0">
+            <div class="card mb-2">
+                <div class="card-body" style="height: 9rem">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <a class="card-title fs-5 fw-semibold "
+                               href="{% url 'catalog:product_detail' product.pk %}">{{ product.name | truncatechars:10 }}</a>
+                            <p class="card-title fs-5">{{ product.price }}</p>
+                            <p class="card-text fs-6 text-secondary">{{ product.description | truncatechars:40 }}</p>
+                        </div>
+                        <img src="{{ product.image | media_filter }}" style="width:30%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
