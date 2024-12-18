@@ -1,11 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from catalog.forms import ProductForm, ProductModeratorForm
-from catalog.models import Contacts, Product
+from catalog.models import Category, Contacts, Product
+from catalog.services import ProductService
+from config.settings import CACHE_ENABLED
 
 
 class ProductListView(ListView):
@@ -18,8 +21,18 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         """Метод для изменения полученных данных."""
+
+        if CACHE_ENABLED:
+            queryset = cache.get("product_list")
+
+            if not queryset:
+                queryset = list(self.model.objects.filter(is_published=True).order_by("-created_at"))
+                queryset.append(None)
+                cache.set("product_list", queryset, 60 * 15)
+
         queryset = list(self.model.objects.filter(is_published=True).order_by("-created_at"))
         queryset.append(None)
+
         return queryset
 
 
@@ -92,3 +105,18 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if user == product.owner or user.has_perm("catalog.delete_product"):
             return product
         raise PermissionDenied
+
+
+class CategoryDetailView(DetailView):
+    """Класс для вывода списка товаров определенной категории."""
+
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        """Метод для добавления дополнительных параметров в контекст."""
+
+        context = super().get_context_data(**kwargs)
+        category_id = self.object.id
+        context["product_list"] = ProductService.get_products_by_category(category_id)
+
+        return context

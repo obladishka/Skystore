@@ -1,0 +1,35 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+{% load static %}
+
+{% block content %}
+{% include "catalog/includes/inc_menu.html" %}
+<div class="container">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h3>{{ category.name }}</h3>
+        {% if category.description %}
+        <p class="lead">{{ category.description }}</p>
+        {% endif %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 text-center">
+        {% for product in product_list %}
+        <div class="d-flex justify-content-center">
+            <div class="card mb-4 box-shadow" style="height: 20rem; width: 16rem">
+                <div class="card-header bg-transparent text-center" style="height: 4rem;">
+                    <div class="row align-items-center py-0 my-0" style="height: 100%;">
+                        <h5 class="fw-medium lh-1 my-0 py-0">{{ product.name }}</h5>
+                    </div>
+                </div>
+                <div class="card-body" style="height: 12rem;">
+                    <h2 class="card-title pricing-card-title">$ {{ product.price }}</h2>
+                    <p class="fs-6 fw-light">{{ product.description|linebreaks|truncatechars:100 }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0" style="height: 4rem;">
+                    <a href="{% url 'catalog:product_detail' product.pk %}"
+                       class="btn btn-md btn-block mb-4 btn-outline-dark position-sticky bottom-0">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
